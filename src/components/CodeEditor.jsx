@@ -31,13 +31,16 @@ const CodeEditor = () => {
 
   const executeCode = async () => {
     try {
-      const url = `http://127.0.0.1:8000/ceos/${param}`;
+      const url = `https://fast-api-tutorial-backend-3yg6eexql-ryanmcgathas-projects.vercel.app/ceos/${param}`;
       const response = await fetch(url, {
         method: method,
         headers: {
           "Content-Type": header,
         },
-        body: body ? JSON.stringify(JSON.parse(body)) : undefined,
+        body:
+          body && method !== "GET"
+            ? JSON.stringify(JSON.parse(body))
+            : undefined,
       });
 
       const responseData = await response.json();
@@ -108,12 +111,16 @@ const CodeEditor = () => {
       <div className="mb-4">
         <h2 className="text-xl font-bold">Request Details:</h2>
         <pre className="bg-gray-100 p-4 rounded">
-          {`fetch("http://127.0.0.1:8000/ceos/${param}", {
+          {`fetch("https://fast-api-tutorial-backend-3yg6eexql-ryanmcgathas-projects.vercel.app/ceos/${param}", {
   method: "${method}",
   headers: {
     "Content-Type": "${header}",
   },
-  body: ${body ? JSON.stringify(JSON.parse(body), null, 2) : "undefined"},
+  body: ${
+    body && method !== "GET"
+      ? JSON.stringify(JSON.parse(body), null, 2)
+      : "undefined"
+  },
 });`}
         </pre>
       </div>
