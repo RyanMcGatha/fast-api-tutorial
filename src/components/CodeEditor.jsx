@@ -9,13 +9,24 @@ const CodeEditor = () => {
     '{"name": "John Doe", "company": "Example Corp"}'
   );
 
-  const methodOptions = ["GET", "POST", "PUT", "DELETE"];
-  const paramOptions = ["1", "2", "3"];
-  const headerOptions = ["application/json", "application/xml"];
+  const methodOptions = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"];
+  const paramOptions = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  const headerOptions = [
+    "application/json",
+    "application/xml",
+    "text/plain",
+    "text/html",
+    "application/x-www-form-urlencoded",
+  ];
   const bodyOptions = [
     '{"name": "John Doe", "company": "Example Corp"}',
     '{"name": "Jane Smith", "company": "Another Corp"}',
     '{"name": "Mike Johnson", "company": "Some Corp"}',
+    '{"name": "Emily Davis", "company": "Tech Solutions"}',
+    '{"name": "William Brown", "company": "Innovate Inc"}',
+    '{"name": "Natalie Lee", "company": "Global Corp"}',
+    '{"name": "Chris Wilson", "company": "Enterprise LLC"}',
+    '{"name": "Laura Taylor", "company": "Design Studio"}',
   ];
 
   const executeCode = async () => {
