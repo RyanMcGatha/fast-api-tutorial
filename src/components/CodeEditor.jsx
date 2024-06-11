@@ -111,7 +111,7 @@ const CodeEditor = () => {
       <div className="mb-4">
         <h2 className="text-xl font-bold">Request Details:</h2>
         <pre className="bg-gray-100 p-4 rounded">
-          {`fetch("https://fast-api-tutorial-backend-3yg6eexql-ryanmcgathas-projects.vercel.app/ceos/${param}", {
+          {`fetch("https://fast-api-tutorial-backend.vercel.app/ceos/${param}", {
   method: "${method}",
   headers: {
     "Content-Type": "${header}",
@@ -128,8 +128,8 @@ const CodeEditor = () => {
         <h2 className="text-xl font-bold">API Route:</h2>
         <pre className="bg-gray-100 p-4 rounded">
           {`@app.${method.toLowerCase()}("/ceos/${param}")
-def handle_ceo(ceo_id: int, ceo: schemas.CEOCreate = Body(...), db: Session = Depends(get_db)):
-    return crud.create_ceo(db=db, ceo=ceo)`}
+def create_ceo(ceo_id: ${param},):
+    return create_ceo`}
         </pre>
       </div>
       <button
