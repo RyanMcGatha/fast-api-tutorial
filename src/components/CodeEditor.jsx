@@ -31,7 +31,7 @@ const CodeEditor = () => {
 
   const executeCode = async () => {
     try {
-      const url = `https://fast-api-tutorial-backend-3yg6eexql-ryanmcgathas-projects.vercel.app/ceos/${param}`;
+      const url = `https://fast-api-tutorial-backend.vercel.app/ceos/${param}`;
       const response = await fetch(url, {
         method: method,
         headers: {
