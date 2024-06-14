@@ -157,10 +157,12 @@ app = FastAPI()
 
 def get_db():
     db = SessionLocal()
-    try:
+    try {
         yield db
-    finally:
+    } finally {
         db.close()
+    }
+}
 
 @app.get("/")
 def read_root(db: Session = Depends(get_db)):
@@ -249,17 +251,6 @@ Base = declarative_base()`}
               </button>
               {`SQLALCHEMY_DATABASE_URL = "postgresql://postgres:yourpassword@localhost:5432/mydatabase"`}
             </pre>
-            <p className="mb-4">
-              Don't have a connection string? Click the button below for
-              instructions on setting up PostgreSQL and obtaining your
-              connection string.
-            </p>
-            <button
-              onClick={() => setActiveSection("summary")}
-              className="bg-blue-500 text-white p-2 rounded mt-4"
-            >
-              Next
-            </button>
           </div>
         )}
 
@@ -658,6 +649,52 @@ class User(Base):
                 </li>
               </ul>
             </div>
+            <div className="mt-4">
+              <h2 className="text-xl font-semibold mb-2">Using SQL Model</h2>
+              <p className="mb-4">
+                If you prefer using SQLModel, follow these steps to set up your
+                models:
+              </p>
+              <ol className="list-decimal list-inside mb-4">
+                <li className="mb-2">Install SQLModel by running:</li>
+                <pre className="bg-gray-300 p-4 rounded relative">
+                  <button
+                    onClick={() => handleCopy("pip install sqlmodel")}
+                    className="absolute top-2 right-2 bg-blue-500 text-white p-1 rounded"
+                  >
+                    Copy
+                  </button>
+                  {`pip install sqlmodel`}
+                </pre>
+                <li className="mb-2">
+                  Create a new file called <code>models.py</code> and define
+                  your models using SQLModel:
+                </li>
+                <pre className="bg-gray-300 p-4 rounded relative">
+                  <button
+                    onClick={() =>
+                      handleCopy(`from sqlmodel import Field, SQLModel
+
+class User(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    email: str = Field(index=True, unique=True)
+    hashed_password: str
+    full_name: str`)
+                    }
+                    className="absolute top-2 right-2 bg-blue-500 text-white p-1 rounded"
+                  >
+                    Copy
+                  </button>
+                  {`from sqlmodel import Field, SQLModel
+
+class User(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    email: str = Field(index=True, unique=True)
+    hashed_password: str
+    full_name: str`}
+                </pre>
+              </ol>
+            </div>
           </div>
         )}
 
@@ -968,10 +1005,12 @@ app = FastAPI()
 # Dependency
 def get_db():
     db = SessionLocal()
-    try:
+    try {
         yield db
-    finally:
+    } finally {
         db.close()
+    }
+}
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
