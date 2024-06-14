@@ -11,8 +11,14 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/tutorial" className="text-white text-lg">
-            Tutorial
+          <Link to="/setup" className="text-white text-lg">
+            Setup
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/creating-routes" className="text-white text-lg">
+            Creating Routes
           </Link>
         </li>
       </ul>

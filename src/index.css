@@ -9,6 +9,13 @@ body {
   padding: 0;
 }
 
+h1 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
 .container {
   max-width: 800px;
   margin: 0 auto;

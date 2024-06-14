@@ -1,22 +1,29 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import Tutorial from "./components/Tutorial";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import "./index.css";
+import Home from "./pages/Home";
+import Setup from "./pages/Setup";
+import DatabaseSetup from "./pages/DatabaseSetup";
+import CreatingModels from "./pages/CreatingModels";
+import CRUDOperations from "./pages/CRUDOperations";
+import CreatingRoutes from "./pages/CreatingRoutes";
 
-function App() {
+const App = () => {
   return (
     <Router>
-      <div className="App">
-        <Navbar />
+      <Navbar />
+      <div className="p-4">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/setup" element={<Setup />} />
+          <Route path="/db" element={<DatabaseSetup />} />
+          <Route path="/models" element={<CreatingModels />} />
+          <Route path="/crud" element={<CRUDOperations />} />
+          <Route path="/creating-routes" element={<CreatingRoutes />} />
         </Routes>
       </div>
     </Router>
   );
-}
+};
 
 export default App;
