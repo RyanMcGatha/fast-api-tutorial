@@ -4,13 +4,13 @@ const CodeEditor = () => {
   const [response, setResponse] = useState(null);
   const [method, setMethod] = useState("POST");
   const [paramType, setParamType] = useState("id");
-  const [paramValue, setParamValue] = useState(1);
+  const [paramValue, setParamValue] = useState("");
   const [body, setBody] = useState(
     '{"name": "John Doe", "company": "Example Corp"}'
   );
   const [useCustomBody, setUseCustomBody] = useState(false);
 
-  const methodOptions = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"];
+  const methodOptions = ["GET", "POST", "PUT", "DELETE", "PATCH"];
   const paramOptions = ["id", "name", "company"];
   const bodyOptions = [
     '{"name": "John Doe", "company": "Example Corp"}',
@@ -25,10 +25,18 @@ const CodeEditor = () => {
 
   const executeCode = async () => {
     try {
-      const endpoint = paramType === "id" ? "id" : "name";
-      const parsedParamValue =
-        paramType === "id" ? parseInt(paramValue, 10) : paramValue;
-      const url = `https://fast-api-tutorial-backend.vercel.app/ceos/${endpoint}/${parsedParamValue}`;
+      let url;
+      if (method === "POST") {
+        url = `https://fast-api-tutorial-backend.vercel.app/ceos`;
+      } else {
+        const endpoint = paramType === "id" ? "id" : "name";
+        const parsedParamValue =
+          paramType === "id"
+            ? parseInt(paramValue, 10)
+            : encodeURIComponent(paramValue);
+        url = `https://fast-api-tutorial-backend.vercel.app/ceos/${endpoint}/${parsedParamValue}`;
+      }
+
       const options = {
         method: method,
         headers: {
@@ -93,6 +101,7 @@ const CodeEditor = () => {
                 className="p-2 border rounded w-full"
                 value={paramValue}
                 onChange={(e) => setParamValue(e.target.value)}
+                onBlur={(e) => setParamValue(e.target.value)}
               />
             </>
           ) : (
@@ -147,9 +156,13 @@ const CodeEditor = () => {
       <div className="mb-4">
         <h2 className="text-xl font-bold">Request Details:</h2>
         <pre className="bg-gray-100 p-4 rounded">
-          {`fetch("https://fast-api-tutorial-backend.vercel.app/ceos/${
-            method === "POST" ? "" : paramType === "id" ? "id" : "name"
-          }/${paramValue}", {
+          {`fetch("https://fast-api-tutorial-backend.vercel.app/ceos${
+            method === "POST"
+              ? ""
+              : paramType === "id"
+              ? `/id/${paramValue}`
+              : `/name/${paramValue}`
+          }", {
   method: "${method}",
   headers: {
     "Content-Type": "application/json",
@@ -165,15 +178,17 @@ const CodeEditor = () => {
       <div className="mb-4">
         <h2 className="text-xl font-bold">API Route:</h2>
         <pre className="bg-gray-100 p-4 rounded">
-          {`@app.${method.toLowerCase()}("/ceos/${
+          {`@app.${method.toLowerCase()}("/ceos${
             method === "POST"
               ? ""
               : paramType === "id"
-              ? "{ceo_id}"
-              : "{ceo_name}"
+              ? "/{ceo_id}"
+              : "/{ceo_name}"
           }")
-def create_ceo(ceo_${paramType}: ${paramType === "id" ? "int" : "str"}):
-    return create_ceo`}
+def ${method.toLowerCase()}_ceo(ceo_${paramType}: ${
+            paramType === "id" ? "int" : "str"
+          }):
+    return ${method.toLowerCase()}_ceo`}
         </pre>
       </div>
       <button
