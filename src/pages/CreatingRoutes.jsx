@@ -49,9 +49,8 @@ const CreatingRoutes = () => {
         <h3 className="text-xl font-semibold mb-2">Step 2: Set Parameters</h3>
         <p className="mb-2">
           If your selected method requires parameters (e.g., GET, PUT, DELETE,
-          PATCH), choose the parameter type (id, name, or company) and enter the
-          corresponding value. For example, if you're testing a GET request to
-          retrieve a CEO by ID, select "id" and enter the ID value.
+          PATCH), enter the ID value in the input field. For example, if you're
+          testing a GET request to retrieve a CEO by ID, enter the ID value.
         </p>
       </div>
 
@@ -61,9 +60,8 @@ const CreatingRoutes = () => {
         </h3>
         <p className="mb-2">
           For methods that require a request body (e.g., POST, PUT, PATCH), you
-          can either select a predefined body from the dropdown menu or enter a
-          custom body by checking the "Use Custom Body" checkbox and typing in
-          the body content. The body should be in JSON format.
+          can enter a custom body by typing in the body content. The body should
+          be in JSON format.
         </p>
       </div>
 

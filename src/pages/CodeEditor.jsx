@@ -3,27 +3,17 @@ import "../index.css";
 
 const CodeEditor = () => {
   const [response, setResponse] = useState(null);
+  const [status, setStatus] = useState(null);
   const [method, setMethod] = useState("POST");
   const [paramType, setParamType] = useState("id");
   const [paramValue, setParamValue] = useState("");
   const [body, setBody] = useState(
     '{"name": "John Doe", "company": "Example Corp"}'
   );
-  const [useCustomBody, setUseCustomBody] = useState(false);
+  const [useCustomBody, setUseCustomBody] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const methodOptions = ["GET", "POST", "PUT", "DELETE", "PATCH"];
-  const paramOptions = ["id", "name", "company"];
-  const bodyOptions = [
-    '{"name": "John Doe", "company": "Example Corp"}',
-    '{"name": "Jane Smith", "company": "Another Corp"}',
-    '{"name": "Mike Johnson", "company": "Some Corp"}',
-    '{"name": "Emily Davis", "company": "Tech Solutions"}',
-    '{"name": "William Brown", "company": "Innovate Inc"}',
-    '{"name": "Natalie Lee", "company": "Global Corp"}',
-    '{"name": "Chris Wilson", "company": "Enterprise LLC"}',
-    '{"name": "Laura Taylor", "company": "Design Studio"}',
-  ];
 
   const getMethodInstructions = (method) => {
     switch (method) {
@@ -123,10 +113,9 @@ def patch_ceo_by_id(ceo_id: int, ceo: schemas.CEOPatch, db: Session = Depends(ge
         url = `https://fast-api-tutorial-backend.vercel.app/ceos`;
       } else {
         const endpoint = paramType === "id" ? "id" : "name";
+        const encodedParamValue = encodeURI(paramValue);
         const parsedParamValue =
-          paramType === "id"
-            ? parseInt(paramValue, 10)
-            : encodeURIComponent(paramValue);
+          paramType === "id" ? parseInt(paramValue, 10) : encodedParamValue;
         url = `https://fast-api-tutorial-backend.vercel.app/ceos/${endpoint}/${parsedParamValue}`;
       }
 
@@ -142,16 +131,13 @@ def patch_ceo_by_id(ceo_id: int, ceo: schemas.CEOPatch, db: Session = Depends(ge
       }
 
       const response = await fetch(url, options);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const responseData = await response.json();
-      setResponse(responseData);
+      const data = await response.json();
+      setResponse(data);
+      setStatus(response.status);
     } catch (error) {
-      setResponse({ error: error.message });
-    } finally {
-      setIsLoading(false);
+      console.error("Error:", error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -176,72 +162,33 @@ def patch_ceo_by_id(ceo_id: int, ceo: schemas.CEOPatch, db: Session = Depends(ge
       </div>
       {method !== "POST" && (
         <div className="mb-4">
-          <label className="block mb-2">Select Param:</label>
-          <select
-            className="p-2 border rounded"
-            value={paramType}
-            onChange={(e) => setParamType(e.target.value)}
+          <label className="block mb-2">Param Type:</label>
+          <span
+            className="mr-2 bg-white p-2 border rounded cursor-pointer
+          "
           >
-            {paramOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+            ID
+          </span>
         </div>
       )}
       {method !== "POST" && (
         <div className="mb-4">
-          {paramType === "id" ? (
-            <>
-              <label className="block mb-2">Enter ID:</label>
-              <input
-                type="number"
-                className="p-2 border rounded w-full"
-                value={paramValue}
-                onChange={(e) => setParamValue(e.target.value)}
-                onBlur={(e) => setParamValue(e.target.value)}
-              />
-            </>
-          ) : (
-            <>
-              <label className="block mb-2">
-                Enter {paramType.charAt(0).toUpperCase() + paramType.slice(1)}:
-              </label>
-              <input
-                type="text"
-                className="p-2 border rounded w-full"
-                value={paramValue}
-                onChange={(e) => setParamValue(e.target.value)}
-              />
-            </>
-          )}
+          <>
+            <label className="block mb-2">Enter ID:</label>
+            <input
+              type="number"
+              className="p-2 border rounded w-full"
+              value={paramValue}
+              onChange={(e) => setParamValue(e.target.value)}
+              onBlur={(e) => setParamValue(e.target.value)}
+            />
+          </>
         </div>
       )}
       {method !== "GET" && method !== "DELETE" && (
         <div className="mb-4">
-          <label className="block mb-2">Select Body:</label>
-          <select
-            className="p-2 border rounded"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            disabled={useCustomBody}
-          >
-            {bodyOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <div className="flex items-center mt-2">
-            <input
-              type="checkbox"
-              className="mr-2"
-              checked={useCustomBody}
-              onChange={() => setUseCustomBody(!useCustomBody)}
-            />
-            <label>Use Custom Body</label>
-          </div>
+          <label className="block mb-2">Request Body:</label>
+
           {useCustomBody && (
             <textarea
               className="p-2 border rounded w-full mt-2"
